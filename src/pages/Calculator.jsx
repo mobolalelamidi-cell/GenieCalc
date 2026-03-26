@@ -130,35 +130,36 @@ export const Calculator = () => {
           <p>{calculator.description}</p>
         </div>
 
-        {/* Formulaire */}
-        <Card className="calculator-card-main">
-          <h2>Paramètres</h2>
+        <div className="calculator-main-grid">
+          {/* Formulaire */}
+          <Card className="calculator-card-main">
+            <h2>Paramètres</h2>
 
-          <div className="form-fields">
-            {calculator.fields.map(field => (
-              <Input
-                key={field.name}
-                label={field.label}
-                name={field.name}
-                type={field.type || 'number'}
-                step={field.step || 0.01}
-                placeholder={field.placeholder || '0'}
-                value={values[field.name] || ''}
-                onChange={handleInputChange}
-                required
-              />
-            ))}
-          </div>
+            <div className="form-fields">
+              {calculator.fields.map(field => (
+                <Input
+                  key={field.name}
+                  label={field.label}
+                  name={field.name}
+                  type={field.type || 'number'}
+                  step={field.step || 0.01}
+                  placeholder={field.placeholder || '0'}
+                  value={values[field.name] || ''}
+                  onChange={handleInputChange}
+                  required
+                />
+              ))}
+            </div>
 
-          <div className="action-row">
-            <Button onClick={handleCalculate}>Calculer</Button>
-            <Button onClick={handleReset} variant="secondary">Réinitialiser</Button>
-          </div>
-        </Card>
+            <div className="action-row">
+              <Button onClick={handleCalculate}>Calculer</Button>
+              <Button onClick={handleReset} variant="secondary">Réinitialiser</Button>
+            </div>
+          </Card>
 
-        {result && (
-          <Card className="result-card">
-            <h2>Résultat</h2>
+          {result && (
+            <Card className="result-card">
+              <h2>Résultat</h2>
 
             <div className="result-value">
               <p>Valeur calculée</p>
@@ -174,6 +175,7 @@ export const Calculator = () => {
             </div>
           </Card>
         )}
+        </div>
 
         <Card className="info-box">
           <h3>💡 Conseil</h3>
