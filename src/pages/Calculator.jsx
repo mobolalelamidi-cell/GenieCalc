@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useLocation } from 'react-router-dom';
 import { Button, Card, Input } from '../components/common';
 import { ArrowLeft, Copy, Download } from 'lucide-react';
 import { Link } from 'react-router-dom';
@@ -80,15 +80,76 @@ const calculatorDefinitions = {
     },
     unit: 'kN',
   },
+  'escaliers': {
+    title: 'Calcul d\'Escaliers',
+    description: 'Détermine la hauteur, la profondeur et la longueur de limon',
+    fields: [
+      { name: 'step_height', label: 'Hauteur de marche (cm)', type: 'number', step: 0.5 },
+      { name: 'tread_depth', label: 'Profondeur de marche (cm)', type: 'number', step: 0.5 },
+      { name: 'steps', label: 'Nombre de marches', type: 'number', step: 1 },
+      { name: 'width', label: 'Largeur de l\'escalier (m)', type: 'number', step: 0.01 },
+    ],
+    calculate: (values) => {
+      const { step_height, tread_depth, steps, width } = values;
+      const totalRise = (step_height * steps) / 100;
+      const totalRun = (tread_depth * steps) / 100;
+      const stringerLength = Math.sqrt(totalRise ** 2 + totalRun ** 2).toFixed(2);
+      return `${stringerLength} m / ${((totalRise * width) * totalRun).toFixed(2)}`;
+    },
+    unit: 'm / m²',
+  },
+  'dalles': {
+    title: 'Dalles',
+    description: 'Calcul du volume de dalle en béton selon l\'épaisseur',
+    fields: [
+      { name: 'length', label: 'Longueur (m)', type: 'number', step: 0.01 },
+      { name: 'width', label: 'Largeur (m)', type: 'number', step: 0.01 },
+      { name: 'thickness', label: 'Épaisseur (cm)', type: 'number', step: 0.5 },
+    ],
+    calculate: (values) => {
+      const { length, width, thickness } = values;
+      const volume = (length * width * (thickness / 100)).toFixed(2);
+      return volume;
+    },
+    unit: 'm³',
+  },
+  'semelles': {
+    title: 'Semelles isolées',
+    description: 'Dimensionnement de semelles selon la charge et la pression admissible du sol',
+    fields: [
+      { name: 'load', label: 'Charge (kN)', type: 'number', step: 1 },
+      { name: 'allowable_pressure', label: 'Pression admissible (kN/m²)', type: 'number', step: 5 },
+      { name: 'width', label: 'Largeur semelle (m)', type: 'number', step: 0.01 },
+    ],
+    calculate: (values) => {
+      const { load, allowable_pressure, width } = values;
+      const requiredArea = load / allowable_pressure;
+      const requiredLength = width > 0 ? (requiredArea / width).toFixed(2) : 0;
+      return `${requiredArea.toFixed(2)} / ${requiredLength}`;
+    },
+    unit: 'm² / m',
+  },
 };
 
 export const Calculator = () => {
   const { type } = useParams();
-  const [values, setValues] = useState({});
-  const [result, setResult] = useState(null);
-  const [copied, setCopied] = useState(false);
+  const location = useLocation();
+  const preset = location.state?.preset?.typeId === type ? location.state.preset : null;
 
+  const [values, setValues] = useState(preset?.inputs || {});
+  const [result, setResult] = useState(preset?.result || null);
+  const [copied, setCopied] = useState(false);
+  const [historyMessage, setHistoryMessage] = useState('');
+
+  const HISTORY_STORAGE_KEY = 'geniecalc_history';
   const calculator = calculatorDefinitions[type] || calculatorDefinitions['volume-beton'];
+
+  const saveHistoryEntry = (entry) => {
+    const raw = window.localStorage.getItem(HISTORY_STORAGE_KEY);
+    const existing = raw ? JSON.parse(raw) : [];
+    const updated = [entry, ...existing].slice(0, 50);
+    window.localStorage.setItem(HISTORY_STORAGE_KEY, JSON.stringify(updated));
+  };
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -101,6 +162,19 @@ export const Calculator = () => {
   const handleCalculate = () => {
     const result = calculator.calculate(values);
     setResult(result);
+
+    saveHistoryEntry({
+      id: Date.now(),
+      type: calculator.title,
+      typeId: type,
+      inputs: values,
+      result,
+      unit: calculator.unit,
+      timestamp: new Date().toISOString(),
+    });
+
+    setHistoryMessage('Calcul ajouté à l\'historique');
+    setTimeout(() => setHistoryMessage(''), 3000);
   };
 
   const handleCopy = () => {
@@ -155,26 +229,28 @@ export const Calculator = () => {
               <Button onClick={handleCalculate}>Calculer</Button>
               <Button onClick={handleReset} variant="secondary">Réinitialiser</Button>
             </div>
+
+            {historyMessage && <div className="history-toast">{historyMessage}</div>}
           </Card>
 
           {result && (
-            <Card className="result-card">
+            <Card className="result-card result-appear">
               <h2>Résultat</h2>
 
-            <div className="result-value">
-              <p>Valeur calculée</p>
-              <div className="result-number">
-                <span>{result}</span>
-                <span>{calculator.unit}</span>
+              <div className="result-value">
+                <p>Valeur calculée</p>
+                <div className="result-number">
+                  <span>{result}</span>
+                  <span>{calculator.unit}</span>
+                </div>
               </div>
-            </div>
 
-            <div className="action-row">
-              <Button onClick={handleCopy} variant="primary">{copied ? 'Copié!' : 'Copier'}</Button>
-              <Button variant="secondary">Télécharger PDF</Button>
-            </div>
-          </Card>
-        )}
+              <div className="action-row">
+                <Button onClick={handleCopy} variant="primary">{copied ? 'Copié!' : 'Copier'}</Button>
+                <Button variant="secondary">Télécharger PDF</Button>
+              </div>
+            </Card>
+          )}
         </div>
 
         <Card className="info-box">

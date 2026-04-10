@@ -47,6 +47,20 @@ export const Dashboard = () => {
       description: 'Calcul des dimensions et des armatures d\'escalier',
       color: 'from-pink-500 to-rose-600',
     },
+    {
+      id: 'dalles',
+      icon: '🧱',
+      title: 'Dalles',
+      description: 'Calcul du volume de dalle et de la surface de bétonnage',
+      color: 'from-slate-500 to-slate-600',
+    },
+    {
+      id: 'semelles',
+      icon: '🦺',
+      title: 'Semelles',
+      description: 'Dimensionnement de semelles isolées selon charge et sol',
+      color: 'from-cyan-500 to-teal-600',
+    },
   ];
 
   return (
@@ -59,7 +73,7 @@ export const Dashboard = () => {
 
         <div className="dashboard-grid">
           {modules.map((module) => (
-            <Link key={module.id} to={`/calculator/${module.id}`}>
+            <Link key={module.id} to={`/calculatrice/${module.id}`}>
               <div className="module-card">
                 <div className="module-icon">{module.icon}</div>
                 <h3>{module.title}</h3>

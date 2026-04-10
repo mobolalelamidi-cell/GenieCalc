@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import Navigation from './components/Navigation';
 import Footer from './components/Footer';
 import Home from './pages/Home';
@@ -16,6 +16,8 @@ export default function App() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/calculatrice" element={<Navigate replace to="/calculatrice/volume-beton" />} />
+            <Route path="/calculatrice/:type" element={<Calculator />} />
             <Route path="/calculator/:type" element={<Calculator />} />
             <Route path="/historique" element={<History />} />
           </Routes>
