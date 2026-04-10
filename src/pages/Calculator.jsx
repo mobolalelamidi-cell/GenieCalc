@@ -229,13 +229,13 @@ export const Calculator = () => {
               <Button onClick={handleCalculate}>Calculer</Button>
               <Button onClick={handleReset} variant="secondary">Réinitialiser</Button>
             </div>
-
-            {historyMessage && <div className="history-toast">{historyMessage}</div>}
           </Card>
 
           {result && (
             <Card className="result-card result-appear">
               <h2>Résultat</h2>
+
+              {historyMessage && <div className="history-toast">{historyMessage}</div>}
 
               <div className="result-value">
                 <p>Valeur calculée</p>
