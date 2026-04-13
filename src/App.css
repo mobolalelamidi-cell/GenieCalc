@@ -111,7 +111,10 @@ section {
 .history-list {
   display: grid;
   gap: 1.24rem;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+}
+
+.history-list {
+  grid-template-columns: 1fr;
 }
 
 .history-page {
@@ -176,10 +179,14 @@ section {
 
 .history-entry {
   display: grid;
-  grid-template-columns: 1fr auto;
+  grid-template-columns: minmax(0, 1.2fr) minmax(180px, 0.8fr);
   gap: 1.5rem;
   align-items: center;
   padding: 1.5rem;
+}
+
+.history-entry-right {
+  min-width: 0;
 }
 
 .history-entry-left {
@@ -324,7 +331,12 @@ section {
   border-radius: 0.75rem;
   cursor: pointer;
   font-weight: 600;
-  transition: background 0.2s ease, transform 0.2s ease;
+  transition: background 0.2s ease, transform 0.2s ease, filter 0.2s ease, box-shadow 0.2s ease;
+}
+
+.btn:hover {
+  transform: translateY(-1px);
+  filter: brightness(1.05);
 }
 
 .btn-primary {
@@ -342,6 +354,10 @@ section {
 }
 
 .btn-secondary:hover { background: #cbd5e1; }
+
+.calculator-page .btn:hover {
+  box-shadow: 0 10px 18px rgba(2, 132, 199, 0.16);
+}
 
 .btn-sm {
   padding: 0.4rem 0.8rem;
@@ -740,9 +756,13 @@ section {
   margin: 0 0 0.45rem;
 }
 
-.section-heading p {
+.calculator-page .section-heading {
+  text-align: center;
+}
+
+.calculator-page .section-heading p {
   color: #475569;
-  margin: 0 0 1.25rem;
+  margin: 0 auto 1.25rem;
   max-width: 760px;
 }
 

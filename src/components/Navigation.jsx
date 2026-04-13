@@ -7,7 +7,12 @@ export const Navigation = () => {
   const [isOpen, setIsOpen] = React.useState(false);
   const location = useLocation();
 
-  const isActive = (path) => location.pathname === path;
+  const isActive = (path) => {
+    if (path === '/calculatrice') {
+      return location.pathname.startsWith('/calculatrice');
+    }
+    return location.pathname === path;
+  };
 
   const navLinks = [
     { path: '/', label: 'Accueil' },
