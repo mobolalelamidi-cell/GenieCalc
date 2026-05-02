@@ -199,10 +199,12 @@ export const Calculator = () => {
           </button>
         </Link>
 
-        <div className="section-heading">
-          <h1>{calculator.title}</h1>
-          <p>{calculator.description}</p>
-        </div>
+        <section className="hero-section">
+          <div className="section-heading">
+            <h1>{calculator.title}</h1>
+            <p>{calculator.description}</p>
+          </div>
+        </section>
 
         <div className="calculator-main-grid">
           {/* Formulaire */}

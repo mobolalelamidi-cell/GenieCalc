@@ -5,24 +5,28 @@ export const Input = ({
   type = 'text',
   error = '',
   required = false,
+  icon,
   ...props
 }) => {
   return (
-    <div className="flex flex-col gap-2">
+    <div className="input-group">
       {label && (
-        <label className="text-sm font-medium text-slate-700 dark:text-slate-300">
+        <label className="input-label">
           {label}
-          {required && <span className="text-red-500">*</span>}
+          {required && <span className="input-required">*</span>}
         </label>
       )}
-      <input
-        type={type}
-        className={`input-field ${error ? 'input-error' : ''}`}
-        {...props}
-      />
-      {error && (
-        <p style={{ color: '#dc2626', fontSize: '0.875rem' }}>{error}</p>
-      )}
+
+      <div className={`input-wrapper ${icon ? 'has-icon' : ''}`}>
+        {icon && <span className="input-icon">{icon}</span>}
+        <input
+          type={type}
+          className={`input-field ${error ? 'input-error' : ''}`}
+          {...props}
+        />
+      </div>
+
+      {error && <p className="input-error-text">{error}</p>}
     </div>
   );
 };

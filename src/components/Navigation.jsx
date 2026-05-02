@@ -1,7 +1,6 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Menu, X } from 'lucide-react';
-import { Button } from './common';
 
 export const Navigation = () => {
   const [isOpen, setIsOpen] = React.useState(false);
@@ -21,6 +20,11 @@ export const Navigation = () => {
     { path: '/historique', label: 'Historique' },
   ];
 
+  const authLinks = [
+    { path: '/login', label: 'Login' },
+    { path: '/signup', label: 'Signup' },
+  ];
+
   return (
     <nav className="navbar">
       <div className="navbar-inner">
@@ -29,16 +33,33 @@ export const Navigation = () => {
           <span className="logo-text">GenieCalc</span>
         </Link>
 
-        <div className="desktop-nav">
-          {navLinks.map((link) => (
-            <Link
-              key={link.path}
-              to={link.path}
-              className={`nav-link ${isActive(link.path) ? 'active' : ''}`}
-            >
-              {link.label}
-            </Link>
-          ))}
+        <div className="nav-center">
+          <div className="nav-links">
+            {navLinks.map((link) => (
+              <Link
+                key={link.path}
+                to={link.path}
+                className={`nav-link ${isActive(link.path) ? 'active' : ''}`}
+              >
+                {link.label}
+              </Link>
+            ))}
+          </div>
+        </div>
+
+        <div className="auth-actions">
+          <Link
+            to="/login"
+            className={`nav-link auth-link ${isActive('/login') ? 'active' : ''}`}
+          >
+            Login
+          </Link>
+          <Link
+            to="/signup"
+            className={`nav-link cta-button ${isActive('/signup') ? 'active' : ''}`}
+          >
+            Signup
+          </Link>
         </div>
 
         <button className="mobile-toggle" onClick={() => setIsOpen(!isOpen)}>
@@ -49,6 +70,16 @@ export const Navigation = () => {
       {isOpen && (
         <div className="mobile-nav">
           {navLinks.map((link) => (
+            <Link
+              key={link.path}
+              to={link.path}
+              className={`mobile-nav-link ${isActive(link.path) ? 'active' : ''}`}
+              onClick={() => setIsOpen(false)}
+            >
+              {link.label}
+            </Link>
+          ))}
+          {authLinks.map((link) => (
             <Link
               key={link.path}
               to={link.path}

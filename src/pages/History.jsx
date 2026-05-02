@@ -87,18 +87,20 @@ export const History = () => {
   return (
     <div className="history-page">
       <div className="content-width">
-        <div className="history-header">
-          <div>
-            <h1>Historique des Calculs</h1>
-            <p className="history-subtitle">Consultez vos calculs précédents et réutilisez-les rapidement</p>
-          </div>
+        <section className="hero-section">
+          <div className="history-header">
+            <div>
+              <h1>Historique des Calculs</h1>
+              <p className="history-subtitle">Consultez vos calculs précédents et réutilisez-les rapidement</p>
+            </div>
 
-          {history.length > 0 && (
-            <Button onClick={handleClearAll} variant="secondary" className="btn-sm history-clear-btn">
-              <Trash2 /> Effacer tout
-            </Button>
-          )}
-        </div>
+            {history.length > 0 && (
+              <Button onClick={handleClearAll} variant="secondary" className="btn-sm history-clear-btn">
+                <Trash2 /> Effacer tout
+              </Button>
+            )}
+          </div>
+        </section>
 
         {history.length > 0 && (
           <div className="history-summary">

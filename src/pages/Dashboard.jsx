@@ -66,10 +66,12 @@ export const Dashboard = () => {
   return (
     <div className="dashboard-page">
       <div className="content-width">
-        <div className="section-heading">
-          <h1>Dashboard</h1>
-          <p>Sélectionnez un module de calcul pour commencer</p>
-        </div>
+        <section className="hero-section">
+          <div className="section-heading">
+            <h1>Dashboard</h1>
+            <p>Sélectionnez un module de calcul pour commencer</p>
+          </div>
+        </section>
 
         <div className="dashboard-grid">
           {modules.map((module) => (

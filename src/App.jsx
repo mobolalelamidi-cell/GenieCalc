@@ -5,6 +5,8 @@ import Home from './pages/Home';
 import Dashboard from './pages/Dashboard';
 import Calculator from './pages/Calculator';
 import History from './pages/History';
+import Login from './pages/Login';
+import Register from './pages/Register';
 import './App.css';
 
 export default function App() {
@@ -15,6 +17,8 @@ export default function App() {
         <main className="flex-grow">
           <Routes>
             <Route path="/" element={<Home />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/signup" element={<Register />} />
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/calculatrice" element={<Navigate replace to="/calculatrice/volume-beton" />} />
             <Route path="/calculatrice/:type" element={<Calculator />} />
